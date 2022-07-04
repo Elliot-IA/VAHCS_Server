@@ -14,6 +14,7 @@ async function run () {
     await console.log("Took Screenshot");
     //browser.close();
 }
+
 run();*/
 
 const puppeteer = require('puppeteer-extra')
