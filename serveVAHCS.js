@@ -59,7 +59,7 @@ app.post("/", function(req, res){
 });
 
 var localSettings = {headless: false, devtools: true };
-var deploymentSettings = {headless: true, devtools: false};
+var deploymentSettings = {headless: true, devtools: false,  args: ["--no-sandbox", "--disable-setuid-sandbox"]};
 
 var universalPage = null;
 function sendMyselfAnEmail(){
