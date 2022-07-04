@@ -115,9 +115,21 @@ async function loginTo_RJE(page){
     console.log('Logging into your gmail account...');
     await page.type("#identifierId", "ianalexander.rje@gmail.com");
     await page.click("#identifierNext", {clickCount: 1});
+
+    console.log("Waiting for password block to load...");
     await page.waitForTimeout(3000);
+    console.log("1/5 delays elasped, 3s");
+    await page.waitForTimeout(3000);
+    console.log("2/5 delays elasped, 6s");
+    await page.waitForTimeout(3000);
+    console.log("3/5 delays elasped, 9s");
+    await page.waitForTimeout(3000);
+    console.log("4/5 delays elasped, 12s");
+    await page.waitForTimeout(3000);
+    console.log("5/5 delays elasped, 15s");
+    console.log("PasswordNext button should now be available");    
+    
     await page.waitForSelector("#passwordNext");
-    //debugger;
 
     await page.waitForTimeout(3000);
 
