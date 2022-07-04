@@ -37,6 +37,9 @@ console.log("Server Initiated! Working Directory (for server js file):"+path.joi
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, function(){
     console.log("Server started on port "+ PORT);
+    if(PORT == 8080){
+       settingsToUse = localSettings;
+    }
 });
 
 app.get("/", function(req, res){
@@ -61,11 +64,12 @@ app.post("/", function(req, res){
 
 var localSettings = {headless: false, devtools: true };
 var deploymentSettings = {headless: true, devtools: false,  args: ["--no-sandbox", "--disable-setuid-sandbox"]};
+var settingsToUse = deploymentSettings;
 
 var universalPage = null;
 function sendMyselfAnEmail(){
     // puppeteer usage as normal
-    puppeteer.launch(deploymentSettings).then(async browser => {
+    puppeteer.launch(settingsToUse).then(async browser => {
         const page = await browser.newPage();
         universalPage = page;
         console.log('Logging into inbox...');
@@ -74,35 +78,46 @@ function sendMyselfAnEmail(){
 
         await loginTo_RJE(page);
 
-        console.log('Awaiting compose to load up...');
-        await page.waitForTimeout(5000);
+        console.log('0s/40s Awaiting compose to load up...');
+        await page.waitForTimeout(10000);
+        console.log('10s/40s Awaiting compose to load up...');
+        await page.waitForTimeout(10000);
+        console.log('20s/40s Awaiting compose to load up...');
+        await page.waitForTimeout(10000);
+        console.log('30s/40s Awaiting compose to load up...');
+        await page.waitForTimeout(10000);
         
-        await page.waitForSelector("#sbddm");
-        console.log('Great compose should be ready');
+        
+        //await page.waitForSelector("#sbddm");
+        console.log('40s/40s Great compose should be ready');
 
         console.log('Writting who email should be sent to...');
         await page.keyboard.type("alexa818@umn.edu");
         await page.keyboard.press("Tab");
         await page.keyboard.press("Tab");
+        await page.waitForTimeout(2000);
         console.log('Writing Email subject line...');
         await page.keyboard.type("This is from VAHCS!");
-        await page.waitForTimeout(500);
-        
-        //await page.type('.editable', 'Sir, your email was sent sucsessfully!');
+        await page.waitForTimeout(1000);
+        await page.keyboard.press("Tab");
+        await page.waitForTimeout(1000);
+        console.log('Writing Email body...');
+        await page.keyboard.type('Sir, your email was sent sucsessfully!');
+        await page.waitForTimeout(1000);
         console.log('Pressing send...');
         await page.keyboard.press("Tab");
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(1000);
         await page.keyboard.press("Enter");
         console.log('Message Sent!');
         console.log('v/ EmailMe Sequence complete');
-        page.close();
+        //page.close();
     });
 }
 
 
 function uploadYoutubeVideo(){
     // puppeteer usage as normal
-    puppeteer.launch(deploymentSettings).then(async browser => {
+    puppeteer.launch(settingsToUse).then(async browser => {
         const page = await browser.newPage();
         universalPage = page;
         console.log('Logging into Youtube...');
@@ -115,8 +130,9 @@ function uploadYoutubeVideo(){
 async function loginTo_RJE(page){
     console.log('Logging into your gmail account...');
     await page.type("#identifierId", "ianalexander.rje@gmail.com");
+    
+    console.log('Clicking next...');
     await page.click("#identifierNext", {clickCount: 1});
-
     
     /*console.log("Waiting for password block to load...");
     await page.waitForTimeout(3000);
@@ -132,15 +148,24 @@ async function loginTo_RJE(page){
     console.log("PasswordNext button should now be available");    
     await page.waitForSelector("#passwordNext");*/
 
+    console.log('email address entered');
     await page.waitForTimeout(3000);
+    console.log('Pressing enter key...');
+    await page.keyboard.press("Enter");
+    console.log('Waiting some time...');
+    await page.waitForTimeout(5000);
+    await page.keyboard.type("Perseverance");
+    console.log('Waiting some time...');
+    await page.waitForTimeout(1500);
     await page.keyboard.press("Enter");
     
-    await page.evaluate(()=>{
+    
+/*    await page.evaluate(()=>{
         document.querySelector("input[type=password]").value = "Perseverance";
-    });
+    });*/
     
     //await page.type(".whsOnd", "Perseverance");
-    await page.click("#passwordNext", {clickCount: 1});
+    //await page.click("#passwordNext", {clickCount: 1});
 }
 
 async function runPureCode(codeStr){
