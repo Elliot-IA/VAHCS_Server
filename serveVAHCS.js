@@ -65,13 +65,21 @@ app.post("/", function(req, res){
     }
 });
 
-app.get("/0", function(req, res){
+app.get("/0", function(req, res){       //Anderson Labs Free Stuff Catalog
     res.redirect("https://drive.google.com/file/d/1pacRygKv4prYoAB9OY5RvZYfzn5DIVce/view");
-    sendEmailToElliot("QR Code 0 was just scanned!", "Sir, someone went to the free stuff catalog! Timestamp: "+buildTimestamp());
+    sendEmailToElliot("QR Code 0 was just scanned!", "Sir, someone went to the free stuff catalog from Anderson Labs! Timestamp: "+buildTimestamp());
 });
-app.get("/1", function(req, res){
+app.get("/1", function(req, res){       //Toaster Free Stuff Catalog
+    res.redirect("https://drive.google.com/file/d/1pacRygKv4prYoAB9OY5RvZYfzn5DIVce/view");
+    sendEmailToElliot("QR Code 0 was just scanned!", "Sir, someone went to the free stuff catalog from The Toaster! Timestamp: "+buildTimestamp());
+});
+app.get("/2", function(req, res){       //Anderson Labs Listed Object Request Form
     res.redirect("https://docs.google.com/forms/d/1IXjueTBJDkvtFg2gNTYaBJm9-3xZlEEPk73PQwAP1Z8");
-    sendEmailToElliot("QR Code 1 was just scanned!", "Sir, someone went to the Listed Object Request Form! Timestamp: "+buildTimestamp());
+    sendEmailToElliot("QR Code 2 was just scanned!", "Sir, someone went to the Listed Object Request Form from Anderson Labs! Timestamp: "+buildTimestamp());
+});
+app.get("/3", function(req, res){       //Toaster Listed Object Request Form
+    res.redirect("https://docs.google.com/forms/d/1IXjueTBJDkvtFg2gNTYaBJm9-3xZlEEPk73PQwAP1Z8");
+    sendEmailToElliot("QR Code 3 was just scanned!", "Sir, someone went to the Listed Object Request Form from The Toaster! Timestamp: "+buildTimestamp());
 });
 
 var localSettings = {headless: false, devtools: true };
@@ -186,8 +194,6 @@ async function runPureCode(codeStr){
 }
 
 
-
-
 var nodemailer = require('nodemailer');
 
 var transporter = nodemailer.createTransport({
@@ -203,7 +209,7 @@ var mailOptions = {
         from: 'vahcs.computer@gmail.com',
         to: 'alexa818@umn.edu',
         subject: '[Default Email]',
-        text: '[This is my defualt email, you have not changed the mailOptions varible in my script sir]'
+        text: '[This is my defualt email, sir you have not changed the mailOptions varible in my script]'
     };
 function sendEmailToElliot(subject, body){
     mailOptions.subject = subject;
