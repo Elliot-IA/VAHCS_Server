@@ -107,7 +107,6 @@ function uploadYoutubeVideo(){
         const page = await browser.newPage();
         universalPage = page;
         console.log('Logging into Youtube...');
-        //const page = await browser.newPage();
         await page.goto('https://studio.youtube.com/channel/UCGPaqgFF0dlWzViC9aC1hJg/editing/sections');
 
         loginTo_RJE();
