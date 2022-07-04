@@ -117,7 +117,8 @@ async function loginTo_RJE(page){
     await page.type("#identifierId", "ianalexander.rje@gmail.com");
     await page.click("#identifierNext", {clickCount: 1});
 
-    console.log("Waiting for password block to load...");
+    
+    /*console.log("Waiting for password block to load...");
     await page.waitForTimeout(3000);
     console.log("1/5 delays elasped, 3s");
     await page.waitForTimeout(3000);
@@ -129,11 +130,11 @@ async function loginTo_RJE(page){
     await page.waitForTimeout(3000);
     console.log("5/5 delays elasped, 15s");
     console.log("PasswordNext button should now be available");    
-    
-    await page.waitForSelector("#passwordNext");
+    await page.waitForSelector("#passwordNext");*/
 
     await page.waitForTimeout(3000);
-
+    await page.keyboard.press("Enter");
+    
     await page.evaluate(()=>{
         document.querySelector("input[type=password]").value = "Perseverance";
     });
