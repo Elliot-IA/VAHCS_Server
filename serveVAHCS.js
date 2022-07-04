@@ -22,11 +22,6 @@ const puppeteer = require('puppeteer-extra')
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin());
 
-
-
-
-
-
 const express = require("express"); 
 const app = express();
 const path = require("path");
@@ -40,7 +35,7 @@ console.log("Server Initiated! Working Directory (for server js file):"+path.joi
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, function(){
-    console.log("Server started on port 8080");
+    console.log("Server started on port "+ PORT);
 });
 
 app.get("/", function(req, res){
@@ -63,10 +58,13 @@ app.post("/", function(req, res){
     }
 });
 
+var localSettings = {headless: false, devtools: true };
+var deploymentSettings = {headless: true, devtools: false};
+
 var universalPage = null;
 function sendMyselfAnEmail(){
     // puppeteer usage as normal
-    puppeteer.launch({ headless: false, devtools: true }).then(async browser => {
+    puppeteer.launch(deploymentSettings).then(async browser => {
         const page = await browser.newPage();
         universalPage = page;
         console.log('Logging into inbox...');
@@ -103,7 +101,7 @@ function sendMyselfAnEmail(){
 
 function uploadYoutubeVideo(){
     // puppeteer usage as normal
-    puppeteer.launch({ headless: false, devtools: true }).then(async browser => {
+    puppeteer.launch(deploymentSettings).then(async browser => {
         const page = await browser.newPage();
         universalPage = page;
         console.log('Logging into Youtube...');
