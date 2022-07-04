@@ -66,10 +66,12 @@ app.post("/", function(req, res){
 });
 
 app.get("/0", function(req, res){
-    
+    res.redirect("https://drive.google.com/file/d/1pacRygKv4prYoAB9OY5RvZYfzn5DIVce/view");
+    sendEmailToElliot("QR Code 0 was just scanned!", "Sir, someone went to the free stuff catalog! Timestamp: "+buildTimestamp());
 });
 app.get("/1", function(req, res){
-    res.redirect("https://drive.google.com/file/d/1pacRygKv4prYoAB9OY5RvZYfzn5DIVce/view");
+    res.redirect("https://docs.google.com/forms/d/1IXjueTBJDkvtFg2gNTYaBJm9-3xZlEEPk73PQwAP1Z8");
+    sendEmailToElliot("QR Code 1 was just scanned!", "Sir, someone went to the Listed Object Request Form! Timestamp: "+buildTimestamp());
 });
 
 var localSettings = {headless: false, devtools: true };
@@ -196,14 +198,16 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-var mailOptions = {
-    from: 'vahcs.computer@gmail.com',
-    to: 'alexa818@umn.edu',
-    subject: 'Sending Email using Node.js',
-    text: 'That was easy!'
-};
 
-function sendMyselfAnEmail(){
+var mailOptions = {
+        from: 'vahcs.computer@gmail.com',
+        to: 'alexa818@umn.edu',
+        subject: '[Default Email]',
+        text: '[This is my defualt email, you have not changed the mailOptions varible in my script sir]'
+    };
+function sendEmailToElliot(subject, body){
+    mailOptions.subject = subject;
+    mailOptions.text = body;
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
             console.log(error);
@@ -213,4 +217,28 @@ function sendMyselfAnEmail(){
     });
 }
 
+function buildTimestamp(){
+    var clock = new Date();
+
+    var year = clock.getFullYear();
+    var month = strAdjust(clock.getMonth()+1);
+    var day = strAdjust(clock.getDate());
+    var hour = strAdjust(clock.getHours());
+    var minuete = strAdjust(clock.getMinutes());
+    var second = strAdjust(clock.getSeconds());
+    var millisecond = clock.getMilliseconds();
+
+    if(hour <= 12){
+        hour = hour+"am";
+    }else{
+        hour = hour-12;
+        hour = strAdjust(hour);
+        hour = hour+"pm";
+    }
+
+    return year+"-"+month+"-"+day+"   "+hour+":"+minuete+":"+second+"."+millisecond;
+}
+function strAdjust(n){
+    return (n<10)?"-"+n:n;
+}
 
