@@ -38,7 +38,10 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, function(){
     console.log("Server started on port "+ PORT);
     if(PORT == 8080){
-       settingsToUse = localSettings;
+        settingsToUse = localSettings;
+        console.log("Launching Puppeteer with localSettings");
+    }else{
+        console.log("Launching Puppeteer with deploymentSettings");
     }
 });
 
@@ -62,12 +65,19 @@ app.post("/", function(req, res){
     }
 });
 
+app.get("/0", function(req, res){
+    
+});
+app.get("/1", function(req, res){
+    res.redirect("https://drive.google.com/file/d/1pacRygKv4prYoAB9OY5RvZYfzn5DIVce/view");
+});
+
 var localSettings = {headless: false, devtools: true };
 var deploymentSettings = {headless: true, devtools: false,  args: ["--no-sandbox", "--disable-setuid-sandbox"]};
 var settingsToUse = deploymentSettings;
 
 var universalPage = null;
-function sendMyselfAnEmail(){
+function sendMyselfAnEmail_old(){
     // puppeteer usage as normal
     puppeteer.launch(settingsToUse).then(async browser => {
         const page = await browser.newPage();
@@ -86,8 +96,8 @@ function sendMyselfAnEmail(){
         await page.waitForTimeout(10000);
         console.log('30s/40s Awaiting compose to load up...');
         await page.waitForTimeout(10000);
-        
-        
+
+
         //await page.waitForSelector("#sbddm");
         console.log('40s/40s Great compose should be ready');
 
@@ -130,10 +140,10 @@ function uploadYoutubeVideo(){
 async function loginTo_RJE(page){
     console.log('Logging into your gmail account...');
     await page.type("#identifierId", "ianalexander.rje@gmail.com");
-    
+
     console.log('Clicking next...');
     await page.click("#identifierNext", {clickCount: 1});
-    
+
     /*console.log("Waiting for password block to load...");
     await page.waitForTimeout(3000);
     console.log("1/5 delays elasped, 3s");
@@ -158,12 +168,12 @@ async function loginTo_RJE(page){
     console.log('Waiting some time...');
     await page.waitForTimeout(1500);
     await page.keyboard.press("Enter");
-    
-    
-/*    await page.evaluate(()=>{
+
+
+    /*    await page.evaluate(()=>{
         document.querySelector("input[type=password]").value = "Perseverance";
     });*/
-    
+
     //await page.type(".whsOnd", "Perseverance");
     //await page.click("#passwordNext", {clickCount: 1});
 }
@@ -174,5 +184,33 @@ async function runPureCode(codeStr){
 }
 
 
+
+
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'vahcs.computer@gmail.com',
+        pass: 'jnfyluctsykvmnpn'
+    }
+});
+
+var mailOptions = {
+    from: 'vahcs.computer@gmail.com',
+    to: 'alexa818@umn.edu',
+    subject: 'Sending Email using Node.js',
+    text: 'That was easy!'
+};
+
+function sendMyselfAnEmail(){
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}
 
 
