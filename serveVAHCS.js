@@ -115,6 +115,7 @@ async function loginTo_RJE(page){
     console.log('Logging into your gmail account...');
     await page.type("#identifierId", "ianalexander.rje@gmail.com");
     await page.click("#identifierNext", {clickCount: 1});
+    await page.waitForTimeout(3000);
     await page.waitForSelector("#passwordNext");
     //debugger;
 
@@ -123,7 +124,7 @@ async function loginTo_RJE(page){
     await page.evaluate(()=>{
         document.querySelector("input[type=password]").value = "Perseverance";
     });
-
+    
     //await page.type(".whsOnd", "Perseverance");
     await page.click("#passwordNext", {clickCount: 1});
 }
