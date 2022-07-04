@@ -65,21 +65,41 @@ app.post("/", function(req, res){
     }
 });
 
+var link_freeStuffCatalog = "https://drive.google.com/file/d/1pacRygKv4prYoAB9OY5RvZYfzn5DIVce/view";
+var link_listedObjectRequestForm = "https://docs.google.com/forms/d/1wGunRb2aDsmf7-3JC2_gGckRBvVfybr_9QymGXV5cQg";
+var link_unlistedObjectRequestForm = "https://docs.google.com/forms/d/1uCWqe8CX8qVokkpbYlDRHWWB8CacWgyAqhe2s-uQWX8";
+
 app.get("/0", function(req, res){       //Anderson Labs Free Stuff Catalog
-    res.redirect("https://drive.google.com/file/d/1pacRygKv4prYoAB9OY5RvZYfzn5DIVce/view");
-    sendEmailToElliot("QR Code 0 was just scanned!", "Sir, someone went to the free stuff catalog from Anderson Labs! Timestamp: "+buildTimestamp());
+    res.redirect(link_freeStuffCatalog);
+    sendEmailToElliot("QR Code 0 was just scanned!", "Sir, someone went to the 'Free Maker Material Catalog' (really the free stuff catalog) from Anderson Labs!");
 });
 app.get("/1", function(req, res){       //Toaster Free Stuff Catalog
-    res.redirect("https://drive.google.com/file/d/1pacRygKv4prYoAB9OY5RvZYfzn5DIVce/view");
-    sendEmailToElliot("QR Code 0 was just scanned!", "Sir, someone went to the free stuff catalog from The Toaster! Timestamp: "+buildTimestamp());
+    res.redirect(link_freeStuffCatalog);
+    sendEmailToElliot("QR Code 0 was just scanned!", "Sir, someone went to the free stuff catalog from The Toaster!");
 });
 app.get("/2", function(req, res){       //Anderson Labs Listed Object Request Form
-    res.redirect("https://docs.google.com/forms/d/1IXjueTBJDkvtFg2gNTYaBJm9-3xZlEEPk73PQwAP1Z8");
-    sendEmailToElliot("QR Code 2 was just scanned!", "Sir, someone went to the Listed Object Request Form from Anderson Labs! Timestamp: "+buildTimestamp());
+    res.redirect(link_listedObjectRequestForm);
+    sendEmailToElliot("QR Code 2 was just scanned!", "Sir, someone went to the Listed Object Request Form from Anderson Labs!");
 });
 app.get("/3", function(req, res){       //Toaster Listed Object Request Form
-    res.redirect("https://docs.google.com/forms/d/1IXjueTBJDkvtFg2gNTYaBJm9-3xZlEEPk73PQwAP1Z8");
-    sendEmailToElliot("QR Code 3 was just scanned!", "Sir, someone went to the Listed Object Request Form from The Toaster! Timestamp: "+buildTimestamp());
+    res.redirect(link_listedObjectRequestForm);
+    sendEmailToElliot("QR Code 3 was just scanned!", "Sir, someone went to the Listed Object Request Form from The Toaster! Timestamp");
+});
+app.get("/4", function(req, res){       //Exceed Lab Free Maker Material Catalog 
+    res.redirect(link_freeStuffCatalog);
+    sendEmailToElliot("QR Code 4 was just scanned!", "Sir, someone went to the 'Free Maker Material Catalog' (really the free stuff catalog) from The Exceed Lab! Timestamp");
+});
+app.get("/5", function(req, res){       //Exceed Listed Object Request Form
+    res.redirect(link_listedObjectRequestForm);
+    sendEmailToElliot("QR Code 5 was just scanned!", "Sir, someone went to the Listed Object Request Form from The Exceed Lab!");
+});
+app.get("/6", function(req, res){       //Keller Free Stuff Table Free Maker Material Catalog
+    res.redirect(link_freeStuffCatalog);
+    sendEmailToElliot("QR Code 6 was just scanned!", "Sir, someone went to the Free Maker Material Catalog from The Keller Free Stuff Table!");
+});
+app.get("/7", function(req, res){       //Keller Free Stuff Table Unlisted Object Request
+    res.redirect(link_freeStuffCatalog);
+    sendEmailToElliot("QR Code 7 was just scanned!", "Sir, someone went to the Unlisted Object Request Form from The Keller Free Stuff Table!");
 });
 
 var localSettings = {headless: false, devtools: true };
