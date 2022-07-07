@@ -68,6 +68,7 @@ app.post("/", function(req, res){
 var link_freeStuffCatalog = "https://drive.google.com/file/d/1pacRygKv4prYoAB9OY5RvZYfzn5DIVce/view";
 var link_listedObjectRequestForm = "https://docs.google.com/forms/d/1wGunRb2aDsmf7-3JC2_gGckRBvVfybr_9QymGXV5cQg";
 var link_unlistedObjectRequestForm = "https://docs.google.com/forms/d/1uCWqe8CX8qVokkpbYlDRHWWB8CacWgyAqhe2s-uQWX8";
+var link_myBestWork = "https://www.astradux.org";
 
 app.get("/0", function(req, res){       //Anderson Labs Free Stuff Catalog
     res.redirect(link_freeStuffCatalog);
@@ -109,6 +110,12 @@ app.get("/9", function(req, res){       //Keller Free Stuff Table Unlisted Objec
     res.redirect(link_freeStuffCatalog);
     sendEmailToElliot("Someone went to the free junk catalog with a link you sent!", "Sir, someone went to the free junk catalog from the free float link!");
 });
+app.get("/10", function(req, res){       //Keller Free Stuff Table Unlisted Object Request
+    res.redirect(link_myBestWork);
+    sendEmailToElliot("QR Code 9 was just scanned!", "Sir, someone requested to see your best work (the astradux) from your maker plaque!");
+});
+
+
 
 var localSettings = {headless: false, devtools: true };
 var deploymentSettings = {headless: true, devtools: false,  args: ["--no-sandbox", "--disable-setuid-sandbox"]};
