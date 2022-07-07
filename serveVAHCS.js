@@ -105,6 +105,10 @@ app.get("/8", function(req, res){       //Keller Free Stuff Table Unlisted Objec
     res.redirect(link_unlistedObjectRequestForm);
     sendEmailToElliot("QR Code 8 was just scanned!", "Sir, someone went to the Unlisted Object Request Form from Anderson Labs!");
 });
+app.get("/9", function(req, res){       //Keller Free Stuff Table Unlisted Object Request
+    res.redirect(link_freeStuffCatalog);
+    sendEmailToElliot("Someone went to the free junk catalog with a link you sent!", "Sir, someone went to the free junk catalog from the free float link!");
+});
 
 var localSettings = {headless: false, devtools: true };
 var deploymentSettings = {headless: true, devtools: false,  args: ["--no-sandbox", "--disable-setuid-sandbox"]};
