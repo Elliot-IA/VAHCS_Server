@@ -68,6 +68,7 @@ app.post("/", function(req, res){
 var link_freeStuffCatalog = "https://drive.google.com/file/d/1pacRygKv4prYoAB9OY5RvZYfzn5DIVce/view";
 var link_listedObjectRequestForm = "https://docs.google.com/forms/d/1wGunRb2aDsmf7-3JC2_gGckRBvVfybr_9QymGXV5cQg";
 var link_unlistedObjectRequestForm = "https://docs.google.com/forms/d/1uCWqe8CX8qVokkpbYlDRHWWB8CacWgyAqhe2s-uQWX8";
+var link_makerRegistrationForm = "https://docs.google.com/forms/d/1Emkx1Cvn0zD6RSZW_-Ch_iM00qLt9uM3ktAh90rpfKo";
 var link_myBestWork = "https://www.astradux.org";
 
 app.get("/0", function(req, res){       //Anderson Labs Free Stuff Catalog
@@ -113,6 +114,10 @@ app.get("/9", function(req, res){       //Keller Free Stuff Table Unlisted Objec
 app.get("/10", function(req, res){       //Keller Free Stuff Table Unlisted Object Request
     res.redirect(link_myBestWork);
     sendEmailToElliot("QR Code 9 was just scanned!", "Sir, someone requested to see your best work (the astradux) from your maker plaque!");
+});
+app.get("/10", function(req, res){       //Keller Free Stuff Table Unlisted Object Request
+    res.redirect(link_makerRegistrationForm);
+    sendEmailToElliot("Someone went to the maker registration form!", "Sir, someone went to the maker registration form from the Toaster Maker Allience Display!");
 });
 
 
