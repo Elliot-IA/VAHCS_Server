@@ -1,3 +1,4 @@
+
 /*gt
 const puppeteer = require('puppeteer');
 const puppeteerExtra = require('puppeteer-extra');
@@ -23,7 +24,7 @@ const puppeteer = require('puppeteer-extra')
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin());
 
-const express = require("express"); 
+const express = require("express");
 const app = express();
 const path = require("path");
 const bodyParser = require("body-parser");
@@ -40,6 +41,7 @@ app.listen(PORT, function(){
     if(PORT == 8080){
         settingsToUse = localSettings;
         console.log("Launching Puppeteer with localSettings");
+        mattSweep();
     }else{
         console.log("Launching Puppeteer with deploymentSettings");
     }
@@ -65,7 +67,7 @@ app.post("/", function(req, res){
     }
 });
 
-var link_freeStuffCatalog = "https://drive.google.com/file/d/1pacRygKv4prYoAB9OY5RvZYfzn5DIVce/view";
+var link_freeStuffCatalog = "https://jrarass-freejunk.herokuapp.com/";
 var link_listedObjectRequestForm = "https://docs.google.com/forms/d/1wGunRb2aDsmf7-3JC2_gGckRBvVfybr_9QymGXV5cQg";
 var link_unlistedObjectRequestForm = "https://docs.google.com/forms/d/1uCWqe8CX8qVokkpbYlDRHWWB8CacWgyAqhe2s-uQWX8";
 var link_makerRegistrationForm = "https://docs.google.com/forms/d/1Emkx1Cvn0zD6RSZW_-Ch_iM00qLt9uM3ktAh90rpfKo";
@@ -87,7 +89,7 @@ app.get("/3", function(req, res){       //Toaster Listed Object Request Form
     res.redirect(link_listedObjectRequestForm);
     sendEmailToElliot("QR Code 3 was just scanned!", "Sir, someone went to the Listed Object Request Form from The Toaster! Timestamp");
 });
-app.get("/4", function(req, res){       //Exceed Lab Free Maker Material Catalog 
+app.get("/4", function(req, res){       //Exceed Lab Free Maker Material Catalog
     res.redirect(link_freeStuffCatalog);
     sendEmailToElliot("QR Code 4 was just scanned!", "Sir, someone went to the 'Free Maker Material Catalog' (really the free stuff catalog) from The Exceed Lab! Timestamp");
 });
@@ -121,6 +123,78 @@ app.get("/10", function(req, res){       //Keller Free Stuff Table Unlisted Obje
 });
 
 
+
+
+
+
+
+
+
+app.get("/timesheet", function(req, res){       //Fill out your timesheet
+    fillOutExceedLabTimesheet();
+    sendEmailToElliot("Sir, I'm attempting to fill out your timesheet", "I'm logging 18 hours of work on this week's timesheet, and I will notify if I was or was not sucsessful...");
+    res.send("Filling out Timesheet");
+});
+
+app.get("/ip", function(req, res){       //Get IP Address Test
+    const ipAddress = requestIP.getClientIp(req);
+    res.send(ipAddress);
+});
+
+
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'vahcs.computer@gmail.com',
+        pass: 'jnfyluctsykvmnpn'
+    }
+});
+
+
+var mailOptions = {
+    from: 'vahcs.computer@gmail.com',
+    to: 'alexa818@umn.edu',
+    subject: '[Default Email]',
+    text: '[This is my defualt email, sir you have not changed the mailOptions varible in my script]'
+};
+function sendEmailToElliot(subject, body){
+    mailOptions.subject = subject;
+    mailOptions.text = body;
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}
+
+function buildTimestamp(){
+    var clock = new Date();
+
+    var year = clock.getFullYear();
+    var month = strAdjust(clock.getMonth()+1);
+    var day = strAdjust(clock.getDate());
+    var hour = strAdjust(clock.getHours());
+    var minuete = strAdjust(clock.getMinutes());
+    var second = strAdjust(clock.getSeconds());
+    var millisecond = clock.getMilliseconds();
+
+    if(hour <= 12){
+        hour = hour+"am";
+    }else{
+        hour = hour-12;
+        hour = strAdjust(hour);
+        hour = hour+"pm";
+    }
+
+    return year+"-"+month+"-"+day+"   "+hour+":"+minuete+":"+second+"."+millisecond;
+}
+function strAdjust(n){
+    return (n<10)?"-"+n:n;
+}
 
 var localSettings = {headless: false, devtools: true };
 var deploymentSettings = {headless: true, devtools: false,  args: ["--no-sandbox", "--disable-setuid-sandbox"]};
@@ -228,63 +302,129 @@ async function loginTo_RJE(page){
     //await page.click("#passwordNext", {clickCount: 1});
 }
 
+function uploadYoutubeVideo(){
+    // puppeteer usage as normal
+    puppeteer.launch(settingsToUse).then(async browser => {
+        const page = await browser.newPage();
+        universalPage = page;
+        console.log('Logging into Youtube...');
+        await page.goto('https://studio.youtube.com/channel/UCGPaqgFF0dlWzViC9aC1hJg/editing/sections');
+
+        loginTo_RJE();
+    });
+}
+
 async function runPureCode(codeStr){
     console.log("Running a string of pure code...");
     eval(codeStr);
 }
 
-
-var nodemailer = require('nodemailer');
-
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'vahcs.computer@gmail.com',
-        pass: 'jnfyluctsykvmnpn'
-    }
-});
-
-
-var mailOptions = {
-        from: 'vahcs.computer@gmail.com',
-        to: 'alexa818@umn.edu',
-        subject: '[Default Email]',
-        text: '[This is my defualt email, sir you have not changed the mailOptions varible in my script]'
-    };
-function sendEmailToElliot(subject, body){
-    mailOptions.subject = subject;
-    mailOptions.text = body;
-    transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
+function fillOutExceedLabTimesheet(){
+    puppeteer.launch(settingsToUse).then(async browser => {
+        const page = await browser.newPage();
+        universalPage = page;
+        console.log('Filling out your Anderson Labs Timesheet...');
+        await page.goto('https://www.myu.umn.edu/psp/psprd/EMPLOYEE/HRMS/c/ROLE_EMPLOYEE.TL_MSS_EE_SRCH_PRD.GBL');
+        await page.waitForSelector("#username");
+        await page.type("#username","alexa818");
+        await page.type("#password","$GoGoldenGophers2020");
+        await page.click(".idp3_form-submit","");        
+        await page.waitForSelector("#duo_form");
+        await page.waitForTimeout(2500);
+        console.log("Clicking 'Send Me a Push'");
+        await page.mouse.click(600, 240);
+        await page.evaluate(()=>{
+            document.querySelectorAll("a")[9].style="position: fixed; top:70px;left:-50px";
+        });
+        universalPage.mouse.click(50,75);
+        universalPage.type("input:nth-of-type(37)","test");
     });
 }
 
-function buildTimestamp(){
-    var clock = new Date();
 
-    var year = clock.getFullYear();
-    var month = strAdjust(clock.getMonth()+1);
-    var day = strAdjust(clock.getDate());
-    var hour = strAdjust(clock.getHours());
-    var minuete = strAdjust(clock.getMinutes());
-    var second = strAdjust(clock.getSeconds());
-    var millisecond = clock.getMilliseconds();
+function mattSweep() {
+    puppeteer.launch({
+        headless: false, devtools: true
+    }).then(async browser => {
 
-    if(hour <= 12){
-        hour = hour+"am";
-    }else{
-        hour = hour-12;
-        hour = strAdjust(hour);
-        hour = hour+"pm";
+        var i = 1;
+        await recursiveProductPageCollectorDriver(browser, i, recursiveProductPageCollectorDriver);
+
+        var j = 55;
+        await recursiveProductPageScreenshotDriver(browser, i, recursiveProductPageScreenshotDriver);
+
+
+    });
+}
+
+var capturedProductSubpageLinks = [];
+async function recursiveProductPageCollectorDriver(browser,i, callback) {
+    console.log('Going to Oponer products page ' + i + '...');
+    const page = await browser.newPage();
+    universalPage = page;
+    await page.goto('https://www.uponor.com/en-us/products?page=' + i);
+    console.log('Pulling product page ' + i + '\'s product subpage links...');
+    /*await page.evaluate(() => {
+        document.querySelectorAll(".jJSlwt").forEach(ele => {
+            console.log(ele.href);
+            capturedProductSubpageLinks.push(ele.href);
+        });
+    });*/
+
+       
+    let urls = await page.$$eval('.jJSlwt', links => {
+        // Extract the links from the data
+        links = links.map(el => el.href)
+        console.log("links: " + links);
+        return links;
+    });
+
+    console.log("urls: " + urls);
+    capturedProductSubpageLinks = capturedProductSubpageLinks.concat(urls);
+    console.log("Current capturedProductSubpageLinks array: " + JSON.stringify(capturedProductSubpageLinks));
+
+    capturedProductSubpageLinks
+
+    i++;
+    await page.close();
+    if (i <= 26) {
+        await callback(browser, i, recursiveProductPageCollectorDriver);
     }
-
-    return year+"-"+month+"-"+day+"   "+hour+":"+minuete+":"+second+"."+millisecond;
 }
-function strAdjust(n){
-    return (n<10)?"-"+n:n;
-}
+async function recursiveProductPageScreenshotDriver(browser, j, callback) {
+    console.log('Going to Oponer product subpage ' + j + ':' + capturedProductSubpageLinks[j]+'...');
+    const page = await browser.newPage();
+    await page.setViewport({ width: 2320, height: 1000 });
+    universalPage = page;
+    await page.goto(capturedProductSubpageLinks[j]);
+    console.log('Clearing the Accept Cookies blocker...');
+    await page.evaluate(() => {
+        document.getElementById("usercentrics-root").remove();
+     });
 
+    var s = 0;
+    do {
+        console.log('Taking a screenshot ('+s+')...');
+        await page.screenshot({ path: 'captures/' + j + '_' + s + '.png' });
+
+        await page.evaluate(() => {
+            document.scrollingElement.scrollBy(0, window.innerHeight - 200);
+        });
+        s++;
+        isNotDone = await getData(page);
+    } while (isNotDone );
+    await page.close();
+
+    j++;
+    if (j < capturedProductSubpageLinks.length) {
+        await callback(browser, j, recursiveProductPageScreenshotDriver);
+    }
+}
+const getData = (page) => {
+    return page.evaluate(async () => {
+        return await new Promise(resolve => { // <-- return the data to node.js from browser
+            // scraping
+            resolve(document.scrollingElement.scrollTop + window.innerHeight < document.scrollingElement.scrollHeight);
+        })
+    })
+}
