@@ -28,7 +28,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const bodyParser = require("body-parser");
-const requestIP = require('request-ip');
+const IP = require('ip');
 
 app.use(express.static(path.join(__dirname, ".")));
 app.use(bodyParser.json({limit: '200mb'}));
@@ -138,8 +138,8 @@ app.get("/timesheet", function(req, res){       //Fill out your timesheet
 });
 
 app.get("/ip", function(req, res){       //Get IP Address Test
-    const ipAddress = requestIP.getClientIp(req);
-    res.send(ipAddress);
+    const ipAddress = IP.address();
+    res.send(ipAddress)
 });
 
 
