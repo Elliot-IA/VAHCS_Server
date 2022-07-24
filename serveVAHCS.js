@@ -118,7 +118,7 @@ app.get("/10", function(req, res){       //Keller Free Stuff Table Unlisted Obje
     res.redirect(link_myBestWork);
     sendEmailToElliot("QR Code 9 was just scanned!", "Sir, someone requested to see your best work (the astradux) from your maker plaque!");
 });
-app.get("/10", function(req, res){       //Keller Free Stuff Table Unlisted Object Request
+app.get("/11", function(req, res){       //Keller Free Stuff Table Unlisted Object Request
     res.redirect(link_makerRegistrationForm);
     sendEmailToElliot("Someone went to the maker registration form!", "Sir, someone went to the maker registration form from the Toaster Maker Allience Display!");
 });
